@@ -1,0 +1,21 @@
+build:
+  gpu: true
+  cuda: "9.2"
+  python_version: "3.6.3"
+  python_packages:
+    # torchtext
+    - "tqdm==4.62.2"
+    - "nltk==3.2.5"
+    # other
+    - "ujson==4.1.0"
+    - "sacrebleu==2.0.0"
+  pre_install:
+    # cog doesn't support torch 0.4.1 yet
+    - "pip install https://download.pytorch.org/whl/cu92/torch-0.4.1-cp36-cp36m-linux_x86_64.whl"
+    - "pip install git+https://github.com/jekbradbury/revtok.git@f1998b72a941d1e5f9578a66dc1c20b01913caab#egg=revtok"
+    - "pip install -e git+git://github.com/andersjo/pyrouge.git@3b6c415204dbc2c8360a01d92533441f4aae95eb#egg=pyrouge"
+    - "cd /src/pyrouge/tools/ROUGE-1.5.5/data/ && rm WordNet-2.0.exc.db && ./WordNet-2.0-Exceptions/buildExeptionDB.pl ./WordNet-2.0-Exceptions ./smart_common_words.txt ./WordNet-2.0.exc.db && chmod 777 WordNet-2.0.exc.db"
+    # -e doesn't work for some reason
+    - "pip install -U /src/pyrouge"
+    - "pip install git+git://github.com/salesforce/cove.git@b17b4c18ac9793f08de9ca7814dac5e54af4c5bb#egg=cov"
+predict: "cog_predict.py:Predictor"

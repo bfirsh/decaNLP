@@ -190,7 +190,7 @@ def run(args, field, val_sets, model):
     print(f'\nSummary: | {sum(decaScore)} | {" | ".join([str(x) for x in decaScore])} |\n')
 
 
-def get_args():
+def get_args(argv=None):
     parser = ArgumentParser()
     parser.add_argument('--path', required=True)
     parser.add_argument('--evaluate', type=str, required=True)
@@ -205,7 +205,7 @@ def get_args():
     parser.add_argument('--overwrite', action='store_true', help='whether to overwrite previously written predictions')
     parser.add_argument('--silent', action='store_true', help='whether to print predictions to stdout')
 
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     with open(os.path.join(args.path, 'config.json')) as config_file:
         config = json.load(config_file)
